@@ -77,16 +77,18 @@ And to re-enable it again:
 
 ### Nginx Configuration File’s Structure and Best Practices
 
-> All Nginx configuration files are located in the /etc/nginx/ directory.
-> The main Nginx configuration file is /etc/nginx/nginx.conf.
-> To make Nginx configuration easier to maintain it is recommended to create a separate configuration file for each domain.
-> New Nginx server block files must end with .conf and be stored in /etc/nginx/conf.d directory. You can have as many server blocks as you need.
-> It is a good idea to follow a standard naming convention, for example if your domain name is mydomain.com then your configuration file should be named /etc/nginx/conf.d/mydomain.com.conf
-> If you use repeatable configuration segments in your domains server blocks then it is a good idea to create a directory named /etc/nginx/snippets refactoring those segments into snippets and include the snippet file to the server blocks.
-Nginx log files (access.log and error.log) are located in the /var/log/nginx/ directory. It is recommended to have a different access and error log files for each server block.
-> You can set your domain document root directory to any location you want. The most common locations for webroot include:
+> All Nginx configuration files are located in the /etc/nginx/ directory.<br />
+> The main Nginx configuration file is /etc/nginx/nginx.conf.<br />
+> To make Nginx configuration easier to maintain it is recommended to create a separate configuration file for each domain.<br />
+> New Nginx server block files must end with .conf and be stored in /etc/nginx/conf.d directory. You can have as many server blocks as you need.<br />
+> It is a good idea to follow a standard naming convention, for example if your domain name is mydomain.com then your configuration file should be named /etc/nginx/conf.d/mydomain.com.conf<br />
+> If you use repeatable configuration segments in your domains server blocks then it is a good idea to create a directory named /etc/nginx/snippets refactoring those segments into snippets and include the snippet file to the server blocks.<br />
+> Nginx log files (access.log and error.log) are located in the /var/log/nginx/ directory. It is recommended to have a different access and error log files for each server block.<br />
+> You can set your domain document root directory to any location you want. The most common locations for webroot include:<br />
 ``/home/<user_name>/<site_name>``<br />
 ``/var/www/<site_name>``<br />
 ``/var/www/html/<site_name>``<br />
 ``/opt/<site_name>``<br />
 ``/usr/share/nginx/html``
+
+> source: [Linuxize](https://linuxize.com/post/how-to-install-nginx-on-centos-7/#manage-the-nginx-service-with-systemctl)
