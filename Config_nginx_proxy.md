@@ -115,3 +115,128 @@ server {
 }
 ```
 
+- Config http with loadbalancing and reverse proxy:
+
+```
+
+  upstream service-1 {
+    least_conn;
+    server 127.0.0.1:1234 max_fails=3 fail_timeout=15s;
+    server 127.0.0.1:1235 max_fails=3 fail_timeout=15s;
+  }
+
+  upstream service-2 {
+    least_conn;
+    server 127.0.0.1:1236 max_fails=3 fail_timeout=15s;
+    server 127.0.0.1:1237 max_fails=3 fail_timeout=15s;
+  }
+
+  upstream service-3 {
+    # default round robin
+    server 127.0.0.1:1238 max_fails=3 fail_timeout=15s;
+    server 127.0.0.1:1239 max_fails=3 fail_timeout=15s;
+  }
+
+
+  server {
+    listen      80;
+    server_name domain;
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    proxy_redirect           off;
+    proxy_set_header         X-Real-IP $remote_addr;
+    proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header         Host $http_host;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+    proxy_set_header   X-Forwarded-Proto $scheme;
+
+    root /opt;
+
+    location / {
+      proxy_pass http://service-1;
+    }
+
+    location /foo/ {
+      proxy_pass http://service-2/;
+    }
+
+    location /bar/ {
+      proxy_pass http://service-3/;
+    }
+
+    location /nginx_status {
+      # check status connection nginx
+        stub_status;
+    }
+  }
+  ```
+  
+ - Config ssl with service loadbalancing (both websocket and tcp):
+
+```
+  upstream service-1 {
+    least_conn;
+    server 127.0.0.1:1234 max_fails=3 fail_timeout=15s;
+    server 127.0.0.1:1235 max_fails=3 fail_timeout=15s;
+  }
+
+  upstream service-2 {
+    least_conn;
+    server 127.0.0.1:1236 max_fails=3 fail_timeout=15s;
+    server 127.0.0.1:1237 max_fails=3 fail_timeout=15s;
+  }
+
+  server {
+    llisten 443 ssl http2;
+    server_name domain;
+    ssl_certificate /etc/letsencrypt/live/domain/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/domain/privkey.pem;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    # Improve HTTPS performance with session resumption
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 1d;
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location / {
+      # Proxy for tcp connect
+      proxy_pass http://service-1/;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_read_timeout 300s;
+      proxy_cache_bypass $http_upgrade;
+    }
+
+    location /websocket/ {
+      # Proxy for websocket
+      proxy_pass http://service-1/;
+      proxy_redirect           off;
+      proxy_set_header         X-Real-IP $remote_addr;
+      proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_http_version 1.1;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+
+      proxy_set_header         Host $http_host;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "Upgrade";
+      proxy_read_timeout 300s;
+      proxy_cache_bypass $http_upgrade;
+    }
+
+    location /nginx_status {
+      # check status connection nginx
+        stub_status;
+    }
+  }
+  ```
