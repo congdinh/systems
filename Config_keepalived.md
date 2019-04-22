@@ -1,6 +1,9 @@
 ## Configuration Keepalived Service
 
 - Simple config for 2 server with 1 Virtual IP using NGINX.
+
+Remove all content and update new config at:``` /etc/keepalived/keepalived.conf```
+
 > Node Master
 ```
 # web-server 1
