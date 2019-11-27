@@ -269,4 +269,4 @@ mongo
 > db.exampleCollection.find();
 ```
 
-> Complited
+> Completed
