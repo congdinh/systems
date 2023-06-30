@@ -301,26 +301,3 @@ mongo
 ```
 
 > Complited
-
----
-
-write mongod --port 27017 on cmd
-then connect to mongo shell : mongo --port 27017
-create the user admin : use admin db.createUser( { user: "admin", pwd: "gW7p5K", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] } )
-disconnect mongo shell
-restart the mongodb : mongod --auth --port 27017
-start mongo shell : mongo --port 27017 -u "myUserAdmin" -p "abc123" --authenticationDatabase "admin"
-To authenticate after connecting, Connect the mongo shell to the mongod: mongo --port 27017
-switch to the authentication database : use admin db.auth("myUserAdmin", "abc123"
-
-use admin
-db.createUser(
-{
-user: "admin",
-pwd: "gW7p5K",
-roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
-}
-)
-
-security:
-authorization: "enabled"
