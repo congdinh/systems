@@ -18,7 +18,9 @@
 > Replica sets also fail over automatically, so if one of the members becomes unavailable, a new primary host is elected and your data is still accessible. That means, when a primary replica fails, the replica set automatically conducts an election process to determine which secondary should become the primary.
 
 # Installing
+
 #### Steps to remember
+
 - First you need to create three ec2 instances.
 - Set the hostname of each instance.
 - Configure the host files in path /etc/hosts.
@@ -26,6 +28,7 @@
 - Initialize the master(primary) database server and add the secondary servers as slaves.
 
 #### Update Host Files
+
 Update IP and name server in /etc/hosts file
 
 #### Install Mongo 4.2.x single each server
@@ -36,9 +39,11 @@ Using .rpm Packages (Recommended)
 Configure the package management system (yum).
 Create a /etc/yum.repos.d/mongodb.repo file so that you can install MongoDB directly using yum.
 Add MongoDB Yum Repository:
+
 ```
 vi /etc/yum.repos.d/mongodb.repo
 ```
+
 ```
 [MongoDB]
 name=MongoDB Repository
@@ -49,28 +54,33 @@ gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
 ```
 
 Install the MongoDB packages.
+
 ```
 sudo yum install -y mongodb-org
 ```
 
 Starting MongoDB.
+
 ```
 sudo systemctl start mongod
 sudo systemctl enable mongod
 ```
 
 Restart MongoDB.
+
 ```
 sudo service mongod restart
 ```
 
 Verifying MongoDB Installation and Check MongoDB Version
+
 ```
 mongod --version
 mongo
 ```
 
 Testing MongoDB
+
 ```
 > use mydb;
 > db.test.save( { a: 1 } )
@@ -79,11 +89,13 @@ Testing MongoDB
 ```
 
 # Config Mongod Replicate
+
 Edit mongo config file on each server
 
 At server-node-1
 
 Edit file /etc/mongod.conf with full content below:
+
 ```
 # mongo-cluster-1
 storage:
@@ -116,6 +128,7 @@ replication:
 At server-node-2
 
 Edit file /etc/mongod.conf with full content below:
+
 ```
 # mongo-cluster-2
 storage:
@@ -148,6 +161,7 @@ replication:
 At server-node-3
 
 Edit file /etc/mongod.conf with full content below:
+
 ```
 # mongo-cluster-3
 storage:
@@ -178,11 +192,13 @@ replication:
 ```
 
 ### Restart MongoDB
+
 ```
 sudo service mongod restart
 ```
 
 Verifying MongoDB Update config
+
 ```
 mongo
 ```
@@ -202,7 +218,9 @@ MongoDB server version: 4.2.1
 Welcome to the MongoDB shell.
 >
 ```
+
 Switch to the admin database and initialize the mongodb replicaset:
+
 ```
 > use admin
 switched to db admin
@@ -215,18 +233,23 @@ switched to db admin
   ]
 })
 ```
+
 Check replicaset and update Master node (Primary).
+
 ```
 > rs.status()
 > rs.isMaster()
 > rs.isMaster()['ismaster']
 > rs.isMaster()['me']
 ```
+
 ### On server-node-2 and server-node-3: Set Secondary Node
+
 When we have a replica set we can write to our Primary (master) node and Read from our Secondary (slave) nodes. Before we can read from the secondary nodes, we need to tell mongodb that we want to read.
 
 By default when you connect to a secondary node and want to read you will get this exception.
 Check replicaset and access to database:
+
 ```
 > rs.status()
 > show databases;
@@ -238,22 +261,28 @@ Check replicaset and access to database:
   "codeName" : "NotMasterNoSlaveOk”,
   ...
 ```
+
 We first need to instruct mongodb that we want to read:
 
 ```
 > rs.slaveOk()
 ```
+
 Now that we have done that, we can read from the secondary:
+
 ```
 > show databases;
   admin   0.000GB
   config  0.000GB
   local   0.000GB
 ```
+
 # Testing Database Replication
+
 > Test case
 
 Create database on Primary Node (server-node-1):
+
 ```
 mongo
 > show database;
@@ -261,7 +290,9 @@ mongo
 > for (var i = 0; i <= 10; i++) db.exampleCollection.insert( { x : i } )
 > db.exampleCollection.find();
 ```
+
 Review on Secondary Node (server-node-2 and server-node-3):
+
 ```
 mongo
 > show database;
@@ -270,3 +301,26 @@ mongo
 ```
 
 > Complited
+
+---
+
+write mongod --port 27017 on cmd
+then connect to mongo shell : mongo --port 27017
+create the user admin : use admin db.createUser( { user: "admin", pwd: "gW7p5K", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] } )
+disconnect mongo shell
+restart the mongodb : mongod --auth --port 27017
+start mongo shell : mongo --port 27017 -u "myUserAdmin" -p "abc123" --authenticationDatabase "admin"
+To authenticate after connecting, Connect the mongo shell to the mongod: mongo --port 27017
+switch to the authentication database : use admin db.auth("myUserAdmin", "abc123"
+
+use admin
+db.createUser(
+{
+user: "admin",
+pwd: "gW7p5K",
+roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+}
+)
+
+security:
+authorization: "enabled"
