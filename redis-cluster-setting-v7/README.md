@@ -42,7 +42,7 @@ Configure Redis Server in Linux.
 
 Next, you need to configure redis for a development environment to be managed by the init system (systemd for the purpose of this tutorial). Start by running bash script to create redis config files:
 
-> Note: Available to update the number of ports (nodes) per server in script file bellow: 7000 7001 7002 7003 7004 7005
+> Note: Available to update the number of ports (nodes) per server on script bellow: 7000 7001 7002 7003 7004 7005
 
 Download folder config: redis-cluster-setting-v7
 ```
@@ -52,7 +52,7 @@ $ mv ./redis-cluster-setting-v7 /opt
 
 - Prepare new Redis Config File:
 ```
-$ bash /opt/redis-cluster-setting-v7/script/redis_cluster_config.sh
+$ bash /opt/redis-cluster-setting-v7/script/redis_cluster_config.sh 7000 7001 7002 7003 7004 7005
 
 # Check these files
 $ ls -la /etc/redis/redis-cluster
@@ -60,7 +60,7 @@ $ ls -la /etc/redis/redis-cluster
 
 - Prepare new Redis Systemd Service File: 
 ```
-$ bash /opt/redis-cluster-setting-v7/script/redis_cluster_systemd.sh
+$ bash /opt/redis-cluster-setting-v7/script/redis_cluster_systemd.sh 7000 7001 7002 7003 7004 7005
 
 # Check these files
 $ ls -la /etc/systemd/system/redis_*

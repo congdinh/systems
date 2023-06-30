@@ -6,8 +6,10 @@ cd $CUR_DIR
 mkdir -p ${CUR_DIR}/redis-cluster
 cd ${CUR_DIR}/redis-cluster
 ip_addr=$(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')
+ports=$@;
 
-for port in 7000 7001 7002 7003 7004 7005; do
+for port in $ports; do
+  echo "${port}";
   mkdir -p ${CUR_DIR}/redis-cluster/${port}
 # Create redis config file
   cat > ${CUR_DIR}/redis-cluster/${port}/redis_${port}.conf <<EOF

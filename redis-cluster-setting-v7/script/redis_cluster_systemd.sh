@@ -1,6 +1,7 @@
 CUR_DIR="/etc/redis"
 cd $CUR_DIR
-for port in 7000 7001 7002 7003 7004 7005; do
+ports=$@;
+for port in $ports; do
 # Create redis systemd service
   cat > /etc/systemd/system/redis_${port}.service <<EOF
 [Unit]
