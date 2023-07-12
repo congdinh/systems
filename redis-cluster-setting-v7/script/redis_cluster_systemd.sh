@@ -1,9 +1,10 @@
 CUR_DIR="/etc/redis"
 cd $CUR_DIR
-ports=$@;
+ports=$@
+
 for port in $ports; do
-# Create redis systemd service
-  cat > /etc/systemd/system/redis_${port}.service <<EOF
+  # Create redis systemd service
+  cat >/etc/systemd/system/redis_${port}.service <<EOF
 [Unit]
 Description=Redis data structure server
 Wants=network-online.target
@@ -22,8 +23,8 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-# Create Redis sentinel systemd service
-  cat > /etc/systemd/system/redis_sentinel_2${port}.service <<EOF
+  # Create Redis sentinel systemd service
+  cat >/etc/systemd/system/redis_sentinel_2${port}.service <<EOF
 [Unit]
 Description=Redis Sentinel
 Wants=network-online.target

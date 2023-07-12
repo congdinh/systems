@@ -1,4 +1,5 @@
 ## Fix redis server startup warnings, redis tuning performance
+
 - https://success.outsystems.com/documentation/how_to_guides/infrastructure/configuring_outsystems_with_redis_in_memory_session_storage/set_up_a_redis_cluster_for_production_environments/
 
 - **Maximum Open Files**

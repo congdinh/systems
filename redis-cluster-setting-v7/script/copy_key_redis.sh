@@ -12,8 +12,7 @@ target_port=7000
 target_db=0
 
 #copy all keys without preserving ttl!
-redis-cli -h $source_host -p $source_port -n $source_db keys \* | while read key;
-do
+redis-cli -h $source_host -p $source_port -n $source_db keys \* | while read key; do
     echo "Copying $key"
     redis-cli --raw -h $source_host -p $source_port -n $source_db DUMP "$key" | head -c -1 | redis-cli -x -h $target_host -p $target_port -n $target_db RESTORE "$key" 0
 done

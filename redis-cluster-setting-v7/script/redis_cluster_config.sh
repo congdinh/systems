@@ -6,13 +6,13 @@ cd $CUR_DIR
 mkdir -p ${CUR_DIR}/redis-cluster
 cd ${CUR_DIR}/redis-cluster
 ip_addr=$(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')
-ports=$@;
+ports=$@
 
 for port in $ports; do
-  echo "${port}";
+  echo "${port}"
   mkdir -p ${CUR_DIR}/redis-cluster/${port}
-# Create redis config file
-  cat > ${CUR_DIR}/redis-cluster/${port}/redis_${port}.conf <<EOF
+  # Create redis config file
+  cat >${CUR_DIR}/redis-cluster/${port}/redis_${port}.conf <<EOF
 ### Redis Config v7 Turning
 bind 0.0.0.0
 port $port
@@ -115,8 +115,8 @@ rdb-save-incremental-fsync yes
 jemalloc-bg-thread yes
 EOF
 
-# Create sentinel config file
-cat > ${CUR_DIR}/redis-cluster/${port}/redis_sentinel_2${port}.conf <<EOF
+  # Create sentinel config file
+  cat >${CUR_DIR}/redis-cluster/${port}/redis_sentinel_2${port}.conf <<EOF
 bind 0.0.0.0
 port 2${port}
 sentinel monitor redis-cluster ${ip_addr} ${port} 1
@@ -128,5 +128,5 @@ daemonize yes
 pidfile "/var/run/redis/redis_sentinel_2${port}.pid"
 dir "${CUR_DIR}/redis-cluster/${port}/"
 EOF
-chown -R redis.redis $CUR_DIR/redis-cluster /var/log/redis /var/run/redis
+  chown -R redis.redis $CUR_DIR/redis-cluster /var/log/redis /var/run/redis
 done

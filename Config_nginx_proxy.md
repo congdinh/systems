@@ -2,25 +2,25 @@
 
 - Find status of Nginx server command
 
-```$ sudo service nginx status```
+`$ sudo service nginx status`
 
 - Configure Nginx server:
-> Config dir – /etc/nginx/<br/>
-> Master/Global config file – /etc/nginx/nginx.conf<br/>
-> Port 80 http config file – /etc/nginx/conf.d/default<br/>
-> TCP ports opened by Nginx – 80 (HTTP), 443 (HTTPS)<br/>
-> Document root directory – /usr/share/nginx/html<br/>
+  > Config dir – /etc/nginx/<br/>
+  > Master/Global config file – /etc/nginx/nginx.conf<br/>
+  > Port 80 http config file – /etc/nginx/conf.d/default<br/>
+  > TCP ports opened by Nginx – 80 (HTTP), 443 (HTTPS)<br/>
+  > Document root directory – /usr/share/nginx/html<br/>
 - To edit files use a text editor such as vi
 
-```$ sudo vi /etc/nginx/conf.d/your-domain.conf```
+`$ sudo vi /etc/nginx/conf.d/your-domain.conf`
 
 - After config, save and test syntax nginx:
 
-```$ nginx -t```
+`$ nginx -t`
 
 - If ok, you can restart nginx that apply changed.
 
-```$ sudo service nginx restart```
+`$ sudo service nginx restart`
 
 ### Create a new file specifically for the server block for the yourdomain.com site
 
@@ -175,9 +175,9 @@ server {
         stub_status;
     }
   }
-  ```
-  
- - Config ssl with service loadbalancing (both websocket and tcp):
+```
+
+- Config ssl with service loadbalancing (both websocket and tcp):
 
 ```
   upstream service-1 {
@@ -239,4 +239,4 @@ server {
         stub_status;
     }
   }
-  ```
+```

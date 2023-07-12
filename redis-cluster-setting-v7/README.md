@@ -5,10 +5,12 @@
 [Package Redis Latest](https://redis.io/download)
 
 Common cluster model:
+
 - 6 node cluster - install on 2 or 3 servers (for production), 3 nodes per server.
 - 6 node cluster - install on 1 server (for lab/test env)
 
-In this article, will install all 6 redis on 1 server. Includes 3 masters (33% data * 3) and 3 slaves for master backup.
+In this article, will install all 6 redis on 1 server. Includes 3 masters (33% data \* 3) and 3 slaves for master backup.
+
 ```
 7000(M)-7003(S)
 7001(M)-7004(S)
@@ -45,12 +47,14 @@ Next, you need to configure redis for a development environment to be managed by
 > Note: Available to update the number of ports (nodes) per server on script bellow: 7000 7001 7002 7003 7004 7005
 
 Download folder config: redis-cluster-setting-v7
+
 ```
 $ wget ...
 $ mv ./redis-cluster-setting-v7 /opt
 ```
 
 - Prepare new Redis Config File:
+
 ```
 $ bash /opt/redis-cluster-setting-v7/script/redis_cluster_config.sh 7000 7001 7002 7003 7004 7005
 
@@ -58,7 +62,8 @@ $ bash /opt/redis-cluster-setting-v7/script/redis_cluster_config.sh 7000 7001 70
 $ ls -la /etc/redis/redis-cluster
 ```
 
-- Prepare new Redis Systemd Service File: 
+- Prepare new Redis Systemd Service File:
+
 ```
 $ bash /opt/redis-cluster-setting-v7/script/redis_cluster_systemd.sh 7000 7001 7002 7003 7004 7005
 
@@ -71,7 +76,6 @@ $ ls -la /etc/systemd/system/redis_*
 Once you have performed all the necessary configurations, you can now start the Redis server for now, enable it to auto-start at system boot; then view its status as follows.
 
 Now you need to run a systemd service for redis in order to control the daemon, by running the following command.
-
 
 - Redis server:
 
@@ -188,22 +192,27 @@ $  systemctl status sentinel_7000 sentinel_7001 sentinel_7002 sentinel_7003 sent
 ### Connect to any redis sentinel
 
 - Connect to redis sentinel
+
 ```
 $ /usr/local/bin/redis-cli -p 27000
 ```
 
 - To see current masters
+
 ```
 $ 192.168.1.110:27000> SENTINEL masters
 ```
 
 - To see slaves for given cluster
+
 ```
 $ 192.168.1.110:27000> SENTINEL slaves redis-cluster
 ```
 
 ## Connect to redis master and execute below command
+
 - Testing redis cluster:
+
 ```
 /usr/local/bin/redis-cli -h 192.168.1.110 -p 7000 -c
 192.168.1.110:7000> CLUSTER NODES
@@ -215,6 +224,7 @@ $ 192.168.1.110:27000> SENTINEL slaves redis-cluster
 ```
 
 - Run a few SET and GET commands to check the behavior of Redis:
+
 ```
 192.168.1.35:7000> set a 1
 -> Redirected to slot [15495] located at 192.168.1.110:7000
@@ -244,6 +254,7 @@ OK
 ```
 
 - Testing failover cluster:
+
 ```
 $ service redis_7001 stop
 
@@ -260,6 +271,7 @@ d360cd23d8e3e39b5354c2d89373037b4be9f3bd 192.168.1.110:7003@17003 slave 64b10129
 ## Benchmark Redis Cluster
 
 - Using redis-benchmark:
+
 ```
 1.Stress master 0:
 $ redis-benchmark -q -h localhost -p 7000 -P 16 -n 1000000 set b “12345”
@@ -274,7 +286,8 @@ $ redis-benchmark -q -h localhost -p 7002 -P 16 -n 1000000 set a “34567”
 $ redis-benchmark -n 10000000 -t set,get -P 16 -q -h localhost -p 7000 --cluster
 ```
 
-> Results: 
+> Results:
+
 ```
 Cluster has 3 master nodes:
 
@@ -287,6 +300,7 @@ GET: 1419849.50 requests per second, p50=0.335 msec
 ```
 
 - Using redislabs/memtier_benchmark (https://codedamn.com/news/backend/benchmarking-redis-performance):
+
 ```
 docker run --rm redislabs/memtier_benchmark:latest --help
 

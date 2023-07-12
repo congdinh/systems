@@ -2,9 +2,10 @@
 
 - Simple config for 2 server with 1 Virtual IP using NGINX.
 
-Remove all content and update new config at:``` /etc/keepalived/keepalived.conf```
+Remove all content and update new config at:` /etc/keepalived/keepalived.conf`
 
 > Node Master
+
 ```
 # web-server 1
 global_defs {
@@ -73,15 +74,16 @@ vrrp_instance VI_01 {
 ```
 
 interface: You need change this field with your network card:
+
 > Get your network card that using command: $ ifconfig
 
 mcast_src_ip: This is your current IP server.
 virtual_ipaddress: The virtual ip address shared between the two loadbalancers.
 
 - Check Virtual IP added to your network card:
-> $ ip a sh wlp3s0
+
+  > $ ip a sh wlp3s0
 
 - Check logs at: /var/log/messages
-
 
 [Detail at here](https://cuongquach.com/cau-hinh-keepalived-thuc-hien-ip-failover-he-thong-ha.html)

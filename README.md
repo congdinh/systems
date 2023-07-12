@@ -7,3 +7,5 @@
 # Keepalived primary - slave configuration
 
 # Nginx load balancer configuration
+
+# Set up Master-Slave replication in MySQL Server
