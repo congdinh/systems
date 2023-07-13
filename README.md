@@ -1,11 +1,13 @@
-# Install Guide redis-cluster with sentinel auto failover.
+# [Install Guide redis-cluster with sentinel auto failover](redis-cluster-setting-v7/README.md)
 
-# Redis cluster configuration
+# [Redis-cluster with sentinel auto failover v5](redis-cluster-setting-v5/README.md)
 
-# MongoDB cluster configuration
+# [Redis cluster configuration](redis-cluster-setting-v7/new-config)
 
-# Keepalived primary - slave configuration
+# [MongoDB cluster configuration](mongo_replication/Mongo_replication.md)
 
-# Nginx load balancer configuration
+# [Keepalived primary - slave configuration](keepalived-failover/Install_keepalived.md)
 
-# Set up Master-Slave replication in MySQL Server
+# [Nginx load balancer configuration](nginx-loadbalancing/Install_nginx_proxy.md)
+
+# [Set up Master-Slave replication in MySQL Server](mysql-master-slave/README.md)
