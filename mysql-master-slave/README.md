@@ -60,11 +60,12 @@ mysql> FLUSH TABLES WITH READ LOCK;
 - Update some variables in script/slave_run_after.sh file.
   > Copy Master Position number from Master DB result log;
   > mysql> SHOW MASTER STATUS;
-  > +------------------+----------+--------------+------------------+-------------------+
-  > | File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-  > +------------------+----------+--------------+------------------+-------------------+
-  > | mysql-bin.000005 | 154 | | | |
-  > +------------------+----------+--------------+------------------+-------------------+
+
+   +------------------+----------+--------------+------------------+-------------------+
+   | File | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+   +------------------+----------+--------------+------------------+-------------------+
+   | mysql-bin.000005 | 154 | | | |
+   +------------------+----------+--------------+------------------+-------------------+
 
 ```sh
 MYSQL_NEW_USER=neomysql
