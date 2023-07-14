@@ -1,0 +1,31 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+
+services:
+  # - name: frontend
+  #   url: http://host.docker.internal:3000
+  #   routes:
+  #     - name: frontend-route
+  #       paths:
+  #         - /
+  #       strip_path: false
+  #       preserve_host: false
+
+  - name: whoami-service
+    url: http://whoami:80
+    routes:
+      - name: whoami-route
+        paths:
+          - /whoami
+        strip_path: true
+    plugins:
+      - name: neo_auth
+        config:
+          redis: 
+            host: "redis"
+            port: 6379
+            db: 1
+          session_secret: "c4APRJBsED4rYFHmfKUTicQnnCNGRAWDMr47pEnwmE"
+          app_fingerprint: "226rRYXT2EVCcxxUwEbUgrdz75s25y"
+          proxy_secret: "23APRJBsED4rYFHmfKUTicQnnCNGRA23DMr47pEnwmE"
